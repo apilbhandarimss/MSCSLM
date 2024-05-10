@@ -53,3 +53,4 @@ Contributions to the MSCSLM project are welcome! Feel free to submit pull reques
 
 MSCSLM is released under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the project for both non-commercial and commercial purposes.
 
+There is one demo chatbot dataset in the code also an apk to try it out 
