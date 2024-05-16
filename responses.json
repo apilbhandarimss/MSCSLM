@@ -4,6 +4,11 @@
 
 "CHILD ABUSE POKHARA 01": "contact here to complain +977-1-44101661, better complain local authority tel of ward no 1 if you are there else use syntax CHILD ABUSE POKHARA wardno: ward head +977-98-5600301",
 
+
+    "info": "MSCSLM (Mathematically Similarity Checked Small Language Model) is a JavaScript-based open-source project focused on research in Mathematically Similarity Checked Small Language Models. It comprises three key components: Data, Similarity Algorithm, and Input/Output functionalities. The project's workflow involves preprocessing user input, checking similarity against a dataset, and presenting the top 2 results with the highest similarity scores. Features include a chatbot, search engine, spelling correction, and synonym handling. Future improvements aim to enhance algorithms, incorporate Natural Language Understanding (NLU), support multiple languages, enable dynamic responses, and integrate user feedback mechanisms. Contributions are welcome under the MIT License. To use MSCSLM, clone the repository, add queries and responses in response.json, and integrate it into your website or application.",
+  
+
+
 "CHILDABUSE POKHARA 1": "contact here to complain +977-1-44101661, better complain local authority tel of ward no 1 if you are there else use syntax CHILD ABUSE POKHARA wardno: ward head +977-98-5600301",
 
 "CHILD ABUSE POKHARA 1": "contact here to complain +977-1-44101661, better complain local authority tel of ward no 1 if you are there else use syntax CHILD ABUSE POKHARA wardno: ward head +977-98-5600301",

@@ -3,337 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>talk to SajiloSathi</title>
-</head>
+    <title>MSCSLM-proto-sajilosathi</title>
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
+    <header id="header">
+        <h1>Welcome to MSCSLM (prototype-sajilosathi)</h1>
+        <p>type info to know more </p>
+    </header>
 
-  
     <div id="chat-container">
-    
         <div id="chat-messages"></div>
-        <input type="text" id="user-input" placeholder="TYPE YOUR MESSAGE..." onkeydown="sendMessage(event)">
+        <input type="text" id="user-input" placeholder="Ask me anything...">
     </div>
-
-    <br>
 
     
 
-    </div>
     <script>
         // Function to add a message to the chat container
         function addMessage(message, isUser = false) {
-          const chatMessages = document.getElementById('chat-messages');
-          const messageDiv = document.createElement('div');
-          messageDiv.className = isUser ? 'user-message' : 'bot-message';
-          messageDiv.textContent = message;
-          chatMessages.appendChild(messageDiv);
-      
-          // Scroll to the bottom of the chat container
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'user-message' : 'bot-message';
+            messageDiv.textContent = message;
+            chatMessages.appendChild(messageDiv);
+
+            // Scroll to the bottom of the chat container
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-      
+
         let responses; // Declare responses variable in the outer scope
-      
+
         // Function to handle user input and trigger search
         function sendMessage(event) {
-          if (event.key === 'Enter') {
-            const userInput = document.getElementById('user-input');
-            const userMessage = userInput.value.trim();
-            userInput.value = '';
-      
-            const topSimilarQueries = search(userMessage);
-      
-            addMessage(`User query: ${userMessage.toUpperCase()}`, true);
-            addMessage(`These are the top 2 results`);
-      
-            setTimeout(() => {
-              topSimilarQueries.forEach((similarQuery) => {
-                addMessage(`Query: ${similarQuery.query} - Response: ${responses[similarQuery.query]}`);
-              });
-            }, 500);
-          }
+            if (event.key === 'Enter') {
+                const userInput = document.getElementById('user-input');
+                const userMessage = userInput.value.trim();
+                userInput.value = '';
+
+                const topSimilarQueries = search(userMessage);
+
+                addMessage(`User query: ${userMessage.toUpperCase()}`, true);
+                addMessage(`These are the top 2 results`);
+
+                setTimeout(() => {
+                    topSimilarQueries.forEach((similarQuery) => {
+                        addMessage(`Query: ${similarQuery.query} - Response: ${responses[similarQuery.query]}`);
+                    });
+                }, 500);
+            }
         }
-      
+
         // Event listener for user input
         document.getElementById('user-input').addEventListener('keypress', sendMessage);
-      
+
         // Fetch responses from responses.json file
         fetch('responses.json')
-          .then(response => response.json())
-          .then(data => {
-            responses = data; // Assign the fetched responses to the 'responses' variable
-          })
-          .catch(error => console.error('Error fetching responses:', error));
-      
+            .then(response => response.json())
+            .then(data => {
+                responses = data; // Assign the fetched responses to the 'responses' variable
+            })
+            .catch(error => console.error('Error fetching responses:', error));
+
         const ignoreWords = ["what", "IS", "THE", "WHO", "NEPAL'S", "streets", "metropolitan", 'mom', 'i', 'I', 'saw', 'his', 'ward', 'no'];
         const spellingMistakes = {
-          'kid': 'child',
-          'scammed': 'scam',
-          'scamed': 'scam',
-          'father': 'elder',
-          'beating': 'abuse',
-          'beat': "abuse",
-          //'wrorking': 'labour',
-          'mother': 'elder',
-          'abusing': "abuse",
+            'kid': 'child',
+            'scammed': 'scam',
+            'scamed': 'scam',
+            'father': 'elder',
+            'beating': 'abuse',
+            'beat': "abuse",
+            //'wrorking': 'labour',
+            'mother': 'elder',
+            'abusing': "abuse",
         };
-      
+
         function normalizeInput(input) {
-          return input.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ').toLowerCase();
+            return input.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ').toLowerCase();
         }
-      
+
         function correctSpelling(query) {
-          const words = query.split(' ');
-      
-          for (let i = 0; i < words.length; i++) {
-            const word = words[i].toLowerCase();
-            if (spellingMistakes[word]) {
-              words[i] = spellingMistakes[word];
+            const words = query.split(' ');
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i].toLowerCase();
+                if (spellingMistakes[word]) {
+                    words[i] = spellingMistakes[word];
+                }
             }
-          }
-      
-          return words.join(' ');
+
+            return words.join(' ');
         }
-      
+
         function calculateSimilarity(str1, str2) {
-          const words1 = str1.split(' ').filter(word => !ignoreWords.includes(word));
-          const words2 = str2.split(' ').filter(word => !ignoreWords.includes(word));
-      
-          const commonWords = words1.filter(word => words2.includes(word)).length;
-          const similarityWords = (commonWords / Math.max(words1.length, words2.length)) * 100;
-      
-          const sequenceSimilarity = calculateSequenceSimilarity(str1, str2);
-          const lengthDifference = calculateLengthDifference(str1, str2);
-          const firstLetterMatch = calculateFirstLetterMatch(str1, str2);
-          const lastLetterMatch = calculateLastLetterMatch(str1, str2);
-      
-          const totalSimilarity = (
-            (similarityWords * 0.45) +         
-            (sequenceSimilarity * 0.39) +      
-            (lengthDifference * 0.01) +         
-            (firstLetterMatch * 0.05) +       
-            (lastLetterMatch * 0.10)          
-          );
-      
-          return totalSimilarity;
+            const words1 = str1.split(' ').filter(word => !ignoreWords.includes(word));
+            const words2 = str2.split(' ').filter(word => !ignoreWords.includes(word));
+
+            const commonWords = words1.filter(word => words2.includes(word)).length;
+            const similarityWords = (commonWords / Math.max(words1.length, words2.length)) * 100;
+
+            const sequenceSimilarity = calculateSequenceSimilarity(str1, str2);
+            const lengthDifference = calculateLengthDifference(str1, str2);
+            const firstLetterMatch = calculateFirstLetterMatch(str1, str2);
+            const lastLetterMatch = calculateLastLetterMatch(str1, str2);
+
+            const totalSimilarity = (
+                (similarityWords * 0.45) +         
+                (sequenceSimilarity * 0.39) +      
+                (lengthDifference * 0.01) +         
+                (firstLetterMatch * 0.05) +       
+                (lastLetterMatch * 0.10)          
+            );
+
+            return totalSimilarity;
         }
-      
+
         function calculateSequenceSimilarity(str1, str2) {
-          const maxLength = Math.max(str1.length, str2.length);
-          let sequenceSimilarity = 0;
-      
-          for (let i = 0; i < maxLength; i++) {
-            if (str1[i] === str2[i]) {
-              sequenceSimilarity += 1 / maxLength; // Increment based on matching letters in sequence
+            const maxLength = Math.max(str1.length, str2.length);
+            let sequenceSimilarity = 0;
+
+            for (let i = 0; i < maxLength; i++) {
+                if (str1[i] === str2[i]) {
+                    sequenceSimilarity += 1 / maxLength; // Increment based on matching letters in sequence
+                }
             }
-          }
-      
-          return sequenceSimilarity * 100; // Convert to percentage
+
+            return sequenceSimilarity * 100; // Convert to percentage
         }
-      
+
         function calculateLengthDifference(str1, str2) {
-          const lengthDiff = Math.abs(str1.length - str2.length);
-          return 100 - (lengthDiff * 3); // Higher similarity for smaller differences in length
+            const lengthDiff = Math.abs(str1.length - str2.length);
+            return 100 - (lengthDiff * 3); // Higher similarity for smaller differences in length
         }
-      
+
         function calculateFirstLetterMatch(str1, str2) {
-          return (str1.charAt(0) === str2.charAt(0)) ? 100 : 0; // Full match of first letter gives 100 similarity
+            return (str1.charAt(0) === str2.charAt(0)) ? 100 : 0; // Full match of first letter gives 100 similarity
         }
-      
+
         function calculateLastLetterMatch(str1, str2) {
-          return (str1.charAt(str1.length - 1) === str2.charAt(str2.length - 1)) ? 100 : 0; // Full match of last letter gives 100 similarity
+            return (str1.charAt(str1.length - 1) === str2.charAt(str2.length - 1)) ? 100 : 0; // Full match of last letter gives 100 similarity
         }
-      
+
         function search(query) {
-          let similarQueries = [];
-      
-          const correctedUserMessage = correctSpelling(query);
-          const userMessage = normalizeInput(correctedUserMessage.trim().toUpperCase());
-      
-          for (const predefinedQuery in responses) {
-            const similarity = calculateSimilarity(userMessage, normalizeInput(predefinedQuery.toUpperCase()));
-            similarQueries.push({ query: predefinedQuery, similarity: similarity });
-          }
-      
-          similarQueries.sort((a, b) => b.similarity - a.similarity); // Sort by similarity, descending
-      
-          const topSimilarQueries = similarQueries.slice(0, 2); // Retrieve top 3 similar queries
-      
-          return topSimilarQueries;
+            let similarQueries = [];
+
+            const correctedUserMessage = correctSpelling(query);
+            const userMessage = normalizeInput(correctedUserMessage.trim().toUpperCase());
+
+            for (const predefinedQuery in responses) {
+                const similarity = calculateSimilarity(userMessage, normalizeInput(predefinedQuery.toUpperCase()));
+                similarQueries.push({ query: predefinedQuery, similarity: similarity });
+            }
+
+            similarQueries.sort((a, b) => b.similarity - a.similarity); // Sort by similarity, descending
+
+            const topSimilarQueries = similarQueries.slice(0, 2); // Retrieve top 3 similar queries
+
+            return topSimilarQueries;
         }
-      </script>
-      
-      
-
-    <style>
-body {
-    background-image: url('bg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif; /* Change font family if desired */
-    margin: 0;
-    padding: 0;
-}
-
-
-body {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Make the body take full viewport height */
-    margin: 0;
-    background-image: url('hi.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif;
-}
-
-#chat-container {
-    max-width: 50;
-    padding: 30px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-    position: relative;
-    z-index: 2;
-    max-height: 50px
-       
-}
-
-#chat-container:hover {
-    background-color: rgba(0, 0, 0, 0.6); /* Darken the background on hover */
-    transform: scale(1.02); /* Slight scaling effect on hover */
-}
-nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      text-align: center;
-      font-size: 8px;
-    }
-
-    nav ul li {
-      display: inline;
-      margin-right: 20px;
-    }
-
-    nav ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    nav ul li a:hover {
-      color: #ffcc00;
-    }
-
-
-    #header {
-    text-align: top;
-    font-size: 4px;
-    color: #fff;
-    position: absolute;
-    top: 5px; /* Adjust to give space from the top */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-    z-index: 3;
-    width: 96.5%;
-    height: auto;
-}
-
-
-#chat-messages {
-    max-height: 200px;
-    max-width: 500px;
-    overflow-y: scroll;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-    padding: 50px;
-    background-image: url('bg.jpg'); /* Change to your background image */
-    background-size: cover;
-    background-repeat: no-repeat;
-    transition: background-color 0.3s ease-in-out;
-    scroll-behavior: auto;
-}
-
-#chat-messages:hover {
-    background-color: rgba(255, 255, 255, 1);
-}
-
-.user-message {
-    text-align: right;
-    margin-bottom: 15px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px;
-    border-radius: 15px 15px 0 15px;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.user-message:hover {
-    background-color: #0056b3;
-}
-
-.bot-message {
-    text-align: left;
-    margin-bottom: 15px;
-    background-color: #28a745;
-    color: #fff;
-    padding: 12px;
-    border-radius: 15px 15px 15px 0;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.bot-message:hover {
-    background-color: #1e7b35;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    color: #333;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-}
-
-input[type="text"]:hover {
-    background-color: rgba(255, 255, 255, 1);
-}
-
-
-#license-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 98.35%;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    color: white;
-    height: auto;
-}
-#links {
-  text-align: justify;
-  font-size: 10px;
-}
-</style>
+    </script>
 </body>
 </html>
