@@ -43,7 +43,6 @@
                 const topSimilarQueries = search(userMessage);
 
                 addMessage(`User query: ${userMessage.toUpperCase()}`, true);
-                addMessage(`These are the top 2 results`);
 
                 setTimeout(() => {
                     topSimilarQueries.forEach((similarQuery) => {
@@ -156,7 +155,7 @@
 
             similarQueries.sort((a, b) => b.similarity - a.similarity); // Sort by similarity, descending
 
-            const topSimilarQueries = similarQueries.slice(0, 2); // Retrieve top 3 similar queries
+            const topSimilarQueries = similarQueries.slice(0, 1); // Retrieve top n similar queries,here n=1
 
             return topSimilarQueries;
         }
