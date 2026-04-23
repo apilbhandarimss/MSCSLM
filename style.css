@@ -4,6 +4,8 @@
     --primary-dark: #1e40af;
     --accent: #16a34a;
     --accent-soft: rgba(22, 163, 74, 0.12);
+    --accent-dark: #166534;
+    --input-border: #cbd5f5;
     --text-dark: #1f2937;
     --text-light: #f8fafc;
     --card: #ffffff;
@@ -148,7 +150,7 @@ body {
 .bot-message {
     align-self: flex-start;
     background: var(--accent-soft);
-    color: #166534;
+    color: var(--accent-dark);
 }
 
 .bot-message::after {
@@ -171,7 +173,7 @@ body {
 input[type="text"] {
     flex: 1;
     padding: 12px 14px;
-    border: 1px solid #cbd5f5;
+    border: 1px solid var(--input-border);
     border-radius: 10px;
     background-color: #f8fafc;
     color: var(--text-dark);

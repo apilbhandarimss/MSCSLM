@@ -48,12 +48,14 @@
 
         let responses; // Declare responses variable in the outer scope
 
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
         // Function to handle user input and trigger search
         function sendMessage(event) {
             if (event && event.isComposing) {
                 return;
             }
-            const userInput = document.getElementById('user-input');
             const userMessage = userInput.value.trim();
             if (!userMessage) {
                 return;
@@ -72,9 +74,6 @@
         }
 
         // Event listener for user input
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
-
         userInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
