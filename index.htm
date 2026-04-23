@@ -73,7 +73,7 @@
         const sendButton = document.getElementById('send-button');
 
         userInput.addEventListener('keydown', (event) => {
-            if (event.isComposing) {
+            if (event.isComposing || event.key === 'Process') {
                 return;
             }
             if (event.key === 'Enter') {
