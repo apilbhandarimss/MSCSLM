@@ -1,139 +1,233 @@
 /* style.css */
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --accent: #16a34a;
+    --accent-soft: rgba(22, 163, 74, 0.2);
+    --accent-bg: #dcfce7;
+    --accent-dark: #14532d;
+    --input-border: #cbd5f5;
+    --text-dark: #1f2937;
+    --text-light: #f8fafc;
+    --card: #ffffff;
+    --muted: #64748b;
+    --shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-image: url('bg.jpg'); /* Replace with your background image */
-    background-size: cover; /* Adjust as needed */
+    background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.75), rgba(30, 41, 59, 0.65)), url('bg.jpg');
+    background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* This is important for background scrolling */
+    background-attachment: fixed;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
+    min-height: 100vh;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+}
+
+.app-shell {
+    width: min(960px, 100%);
+    padding: 48px 20px 60px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    color: #fff;
-    background-color: #f0f0f0;
+    gap: 24px;
 }
 
-header {
-    background-color: #333; /* Darker header */
-    padding: 20px 0;
-    width: 100%;
+.hero {
+    background: rgba(255, 255, 255, 0.92);
+    padding: 28px 32px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-header h1 {
+.hero h1 {
+    margin: 12px 0 8px;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    color: var(--text-dark);
+}
+
+.hero p {
     margin: 0;
-    font-size: 2.5em;
-    color: #ffcc00; /* Gold color for heading */
+    color: var(--muted);
+    font-size: 1.05rem;
 }
 
-header p {
-    font-size: 1.2em;
-    margin-top: 5px;
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-#chat-container {
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-    background-color: #fff; /* White chat container */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
-    position: relative; /* For the speech bubble effect later */
+.chat-card {
+    background: var(--card);
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
 }
 
-#chat-messages {
-    max-height: 300px;
+.chat-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.chat-card__header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.subtle {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.status-pill {
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.chat-messages {
+    max-height: 320px;
     overflow-y: auto;
-    background-color: #f5f5f5; /* Light gray for messages */
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inset shadow */
-    margin-bottom: 15px;
+    background-color: #f4f6fb;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+    margin-bottom: 16px;
+}
+
+.user-message,
+.bot-message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    position: relative;
+    line-height: 1.5;
+    overflow: visible;
 }
 
 .user-message {
-    text-align: right;
-    margin-bottom: 10px;
-    background-color: #007bff; /* Blue for user messages */
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 10px;
-    position: relative; /* For the speech bubble effect later */
-    /* Add this for a better speech bubble effect */
-    /* Add this for a better speech bubble effect */
-    &:after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        right: 10px;
-        border-style: solid;
-        border-width: 10px 10px 0 0;
-        border-color: #007bff transparent transparent transparent;
-    }
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--text-light);
+}
+
+.user-message::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    bottom: -4px;
+    right: 16px;
+    background: var(--primary-dark);
+    transform: rotate(45deg);
+    border-radius: 0 0 2px 0;
 }
 
 .bot-message {
-    text-align: left;
-    margin-bottom: 10px;
-    background-color: #28a745; /* Green for bot messages */
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 10px;
-    position: relative; /* For the speech bubble effect later */
-    &:after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 10px;
-        border-style: solid;
-        border-width: 10px 0 0 10px;
-        border-color: transparent transparent transparent #28a745;
-    }
+    align-self: flex-start;
+    background: var(--accent-bg);
+    color: var(--accent-dark);
+}
+
+.bot-message::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    bottom: -4px;
+    left: 16px;
+    background: var(--accent-bg);
+    transform: rotate(45deg);
+    border-radius: 0 0 0 2px;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #eee; /* Light gray for input */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #333;
-    font-size: 1em;
-    transition: box-shadow 0.2s ease-in-out;
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background-color: #f8fafc;
+    color: var(--text-dark);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input[type="text"]:focus {
     outline: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-#license-info {
-    background-color: #333; /* Darker background */
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    margin-top: 20px;
-    position: relative;
-    bottom: 0;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Top shadow */
+#send-button {
+    border: none;
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--text-light);
+    padding: 0 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
-#links {
-    font-size: 0.9em;
-    margin-top: auto; /* This is the key for the footer to stick to the bottom */
-
+#send-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
 }
 
-#links a {
-    color: #ffcc00; /* Gold color for links */
-    text-decoration: none;
+#send-button:active {
+    transform: translateY(0);
 }
 
-#links a:hover {
-    text-decoration: underline;
+.hint {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .chat-card__header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    #send-button {
+        width: 100%;
+        padding: 12px;
+    }
 }

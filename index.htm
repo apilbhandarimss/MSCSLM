@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSCSLM-proto-sajilosathi</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>MSCSLM - Sajilo Sathi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <header id="header">
-        <h1>Welcome to MSCSLM (prototype-sajilosathi)</h1>
-        <p>type info to know more </p>
-    </header>
+    <div class="app-shell">
+        <header id="header" class="hero">
+            <span class="hero-badge">MSCSLM</span>
+            <h1>Welcome to Sajilo Sathi</h1>
+            <p>Your quick guide for child safety, support, and local services.</p>
+        </header>
 
-    <div id="chat-container">
-        <div id="chat-messages"></div>
-        <input type="text" id="user-input" placeholder="Ask me anything...">
+        <main id="chat-container" class="chat-card">
+            <div class="chat-card__header">
+                <div>
+                    <h2>Chat Assistant</h2>
+                    <p class="subtle">Ask a question to get the best matched response.</p>
+                </div>
+                <span class="status-pill">Online</span>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="input-row">
+                <input type="text" id="user-input" placeholder="Ask me anything...">
+                <button id="send-button" type="button">Send</button>
+            </div>
+            <p class="hint">Press Enter or click Send to continue.</p>
+        </main>
     </div>
 
     
@@ -33,27 +48,41 @@
 
         let responses; // Declare responses variable in the outer scope
 
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
         // Function to handle user input and trigger search
-        function sendMessage(event) {
-            if (event.key === 'Enter') {
-                const userInput = document.getElementById('user-input');
-                const userMessage = userInput.value.trim();
-                userInput.value = '';
-
-                const topSimilarQueries = search(userMessage);
-
-                addMessage(`User query: ${userMessage.toUpperCase()}`, true);
-
-                setTimeout(() => {
-                    topSimilarQueries.forEach((similarQuery) => {
-                        addMessage(`Query: ${similarQuery.query} - Response: ${responses[similarQuery.query]}`);
-                    });
-                }, 500);
+        function sendMessage() {
+            const userMessage = userInput.value.trim();
+            if (!userMessage) {
+                return;
             }
+            userInput.value = '';
+
+            const topSimilarQueries = search(userMessage);
+
+            addMessage(`User query: ${userMessage.toUpperCase()}`, true);
+
+            setTimeout(() => {
+                topSimilarQueries.forEach((similarQuery) => {
+                    addMessage(`Query: ${similarQuery.query} - Response: ${responses[similarQuery.query]}`);
+                });
+            }, 500);
         }
 
         // Event listener for user input
-        document.getElementById('user-input').addEventListener('keypress', sendMessage);
+        userInput.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') {
+                return;
+            }
+            if (event.isComposing) {
+                return;
+            }
+            event.preventDefault();
+            sendMessage();
+        });
+
+        sendButton.addEventListener('click', sendMessage);
 
         // Fetch responses from responses.json file
         fetch('responses.json')
