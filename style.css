@@ -4,6 +4,7 @@
     --primary-dark: #1e40af;
     --accent: #16a34a;
     --accent-soft: rgba(22, 163, 74, 0.2);
+    --accent-bg: #dcfce7;
     --accent-dark: #14532d;
     --input-border: #cbd5f5;
     --text-dark: #1f2937;
@@ -150,7 +151,7 @@ body {
 
 .bot-message {
     align-self: flex-start;
-    background: var(--accent-soft);
+    background: var(--accent-bg);
     color: var(--accent-dark);
 }
 
@@ -161,7 +162,7 @@ body {
     height: 12px;
     bottom: -6px;
     left: 16px;
-    background: var(--accent-soft);
+    background: var(--accent-bg);
     transform: rotate(45deg);
     border-radius: 0 0 0 2px;
 }
