@@ -136,11 +136,13 @@ body {
 .user-message::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    right: 14px;
-    border-style: solid;
-    border-width: 8px 8px 0 0;
-    border-color: var(--primary-dark) transparent transparent transparent;
+    width: 12px;
+    height: 12px;
+    bottom: -6px;
+    right: 16px;
+    background: var(--primary-dark);
+    transform: rotate(45deg);
+    border-radius: 0 0 2px 0;
 }
 
 .bot-message {
@@ -152,11 +154,13 @@ body {
 .bot-message::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    left: 14px;
-    border-style: solid;
-    border-width: 8px 0 0 8px;
-    border-color: transparent transparent transparent var(--accent-soft);
+    width: 12px;
+    height: 12px;
+    bottom: -6px;
+    left: 16px;
+    background: var(--accent-soft);
+    transform: rotate(45deg);
+    border-radius: 0 0 0 2px;
 }
 
 .input-row {
