@@ -120,6 +120,8 @@
 // ── State ──────────────────────────────────────────────────────────────────────
 const SESSION_KEY   = 'sajilo_sessions';
 const CURRENT_KEY   = 'sajilo_current_session';
+const TYPING_DELAY_BASE     = 900;   // ms minimum before bot reply appears
+const TYPING_DELAY_VARIANCE = 400;   // ms random extra delay for realism
 
 let responses = null;
 let currentSessionId = null;
@@ -179,7 +181,8 @@ function getSessionIndex() {
 function persistCurrentSession() {
     if (!currentSessionId) return;
     const idx = getSessionIndex();
-    const title = currentMessages.find(m => m.role === 'user')?.text?.slice(0, 40) || 'New Chat';
+    const raw   = currentMessages.find(m => m.role === 'user')?.text || 'New Chat';
+    const title = raw.length > 40 ? raw.slice(0, 40) + '…' : raw;
     const session = { id: currentSessionId, title, messages: currentMessages, createdAt: currentMessages[0]?.timestamp || new Date().toISOString() };
     if (idx >= 0) allSessions[idx] = session;
     else allSessions.unshift(session);
@@ -238,7 +241,7 @@ function renderSessionList() {
 }
 
 function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 // ── Render a single message ───────────────────────────────────────────────────
@@ -328,7 +331,7 @@ function sendMessage() {
             renderMessage(botMsg);
         });
         persistCurrentSession();
-    }, 900 + Math.random() * 400);
+    }, TYPING_DELAY_BASE + Math.random() * TYPING_DELAY_VARIANCE);
 }
 
 // ── NLP helpers (unchanged algorithm) ────────────────────────────────────────
