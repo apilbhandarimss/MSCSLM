@@ -127,6 +127,7 @@ body {
     border-radius: 16px;
     position: relative;
     line-height: 1.5;
+    overflow: visible;
 }
 
 .user-message {

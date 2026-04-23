@@ -53,7 +53,7 @@
 
         // Function to handle user input and trigger search
         function sendMessage(event) {
-            if (event?.isComposing) {
+            if (event.isComposing) {
                 return;
             }
             const userMessage = userInput.value.trim();
