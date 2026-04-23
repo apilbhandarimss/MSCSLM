@@ -52,10 +52,7 @@
         const sendButton = document.getElementById('send-button');
 
         // Function to handle user input and trigger search
-        function sendMessage(event) {
-            if (event?.isComposing) {
-                return;
-            }
+        function sendMessage() {
             const userMessage = userInput.value.trim();
             if (!userMessage) {
                 return;
@@ -75,9 +72,12 @@
 
         // Event listener for user input
         userInput.addEventListener('keydown', (event) => {
+            if (event.isComposing) {
+                return;
+            }
             if (event.key === 'Enter') {
                 event.preventDefault();
-                sendMessage(event);
+                sendMessage();
             }
         });
 
